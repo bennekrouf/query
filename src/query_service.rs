@@ -1,8 +1,5 @@
 
-
 use tonic::{Request, Response, Status};
-use query::query_server::Query;
-use query::{ReadLogsRequest, ReadLogsResponse, LogEntry};
 use datafusion::prelude::*;
 use chrono::DateTime;
 // use chrono::offset::Utc;
@@ -10,12 +7,14 @@ use chrono::DateTime;
 pub mod query {
     tonic::include_proto!("query");
 }
+use query::query_service_server::QueryService;
+use query::{ReadLogsRequest, ReadLogsResponse, LogEntry};
 
 #[derive(Debug, Default)]
-pub struct QueryService;
+pub struct MyQueryService;
 
 #[tonic::async_trait]
-impl Query for QueryService {
+impl QueryService for MyQueryService {
     async fn read_logs(
         &self,
         request: Request<ReadLogsRequest>,

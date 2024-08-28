@@ -1,22 +1,21 @@
 
-fn main() -> std::io::Result<()> {
-    // Path to the proto files
-    let proto_root = "proto";
 
-    // Path to the output file descriptor set
-    let out_dir = std::env::var("OUT_DIR").expect("OUT_DIR environment variable not set");
-    let query_descriptor_path = std::path::Path::new(&out_dir).join("query_descriptor.bin");
+use std::env;
+use std::path::PathBuf;
 
-    // Compile query.proto
+fn main() {
+    // Get the OUT_DIR environment variable at runtime
+    let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
+
+    // Construct the path to the descriptor set file
+    let descriptor_path = out_dir.join("query_descriptor.bin");
+
+    // Configure and compile the proto files
     tonic_build::configure()
-        .file_descriptor_set_path(&query_descriptor_path)
-        .compile(
-            &["proto/query.proto"], // Path to your proto file
-            &[proto_root],            // Include directory for proto files
-        )?;
-
-    println!("cargo:rerun-if-changed=proto/query.proto");
-
-    Ok(())
+        .file_descriptor_set_path(descriptor_path)
+        .compile(&["proto-definitions/query.proto"], &["proto"])
+        .unwrap_or_else(|e| panic!("Failed to compile proto files: {}", e));
 }
+
+
 

@@ -7,9 +7,11 @@ edition = "2021"
 arrow = "52.2.0"
 chrono = "0.4.38"
 datafusion = "41.0.0"
+dotenvy = "0.15.7"
 prost = "0.13.1"
 tokio = { version = "1.39.3", features = ["full"] }
 tonic = { version = "0.12.2", features = ["transport"] }
+tonic-reflection = "0.12.2"
 
 
 
